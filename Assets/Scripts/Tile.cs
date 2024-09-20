@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour
     private RectTransform tileTransform;
     private Animator tileAnimator;
 
+
     public void Start()
     {
         buttons = GetComponentsInChildren<Button>();

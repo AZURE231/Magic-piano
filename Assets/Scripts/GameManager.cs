@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("Score")]
     [SerializeField] private int perfectScore = 2;
     [SerializeField] private int greatScore = 1;
+    [SerializeField] private int combo = 0;
 
     [Header("Tile speed")]
     [SerializeField] private const float minSpeed = 5f;
@@ -38,9 +39,14 @@ public class GameManager : MonoBehaviour
     public event EventHandler<OnScoreChangedEventArgs> OnScoreChanged;
     public class OnScoreChangedEventArgs : EventArgs
     {
-        public float score;
+        public int score;
         public bool isPerfect;
+        public int combo;
     }
+
+    private bool canRestart = true;
+    private float restartCooldown = 1f;
+
     public static GameManager Instance;
 
     private void Awake()
@@ -80,10 +86,19 @@ public class GameManager : MonoBehaviour
 
     public void IncreasePoint(bool isPerfect)
     {
-        if (isPerfect) score += perfectScore;
-        else score += greatScore;
+        if (isPerfect)
+        {
+            combo++;
+            score += perfectScore + combo;
+        }
+        else
+        {
+            combo = 0;
+            score += greatScore;
+        }
         OnScoreChanged?.Invoke(this, new OnScoreChangedEventArgs
         {
+            combo = combo,
             score = score,
             isPerfect = isPerfect
         });
@@ -93,9 +108,11 @@ public class GameManager : MonoBehaviour
     {
         currentSpeed = minSpeed;
         elapsedTime = 0;
+        combo = 0;
         OnScoreChanged?.Invoke(this, new OnScoreChangedEventArgs
         {
             score = 0,
+            combo = 0,
         });
         score = 0;
         AudioManager.Instance.Play(MUSIC_NAME);
@@ -105,8 +122,19 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        if (canRestart)
+        {
+            canRestart = false;
+            StartCoroutine(RestartWithDelay());
+        }
+    }
+
+    private IEnumerator RestartWithDelay()
+    {
+        yield return new WaitForSeconds(restartCooldown); // Add a short delay
         OnRestartGame?.Invoke(this, EventArgs.Empty);
         StartGame();
+        canRestart = true;
     }
 
     public void GameOver()
