@@ -27,6 +27,7 @@ public class Tile : MonoBehaviour
 
     private void Instance_OnRestartGame(object sender, EventArgs e)
     {
+        //DisableTile();
         Destroy(gameObject);
     }
 
@@ -41,13 +42,13 @@ public class Tile : MonoBehaviour
             {
                 GameManager.Instance.GameOver();
             }
+            //DisableTile();
             Destroy(gameObject);
         }
     }
 
     public void OnClickedTile(bool isPerfect)
     {
-        Debug.Log("clicked???");
         if (!isClicked)
         {
             if (isPerfect) Debug.Log("Perfect");
@@ -66,7 +67,14 @@ public class Tile : MonoBehaviour
         }
     }
 
-    // Unsubscribe from event when the object is destroyed
+    private void DisableTile()
+    {
+        sparkPS.SetActive(false);
+        gameObject.SetActive(false);
+
+    }
+
+    //Unsubscribe from event when the object is destroyed
     public void OnDestroy()
     {
         GameManager.Instance.OnRestartGame -= Instance_OnRestartGame;

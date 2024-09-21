@@ -9,19 +9,21 @@ public class UIManager : MonoBehaviour
     private const string SCORED = "Scored";
     private const string LIGHTEN = "Lighten";
     private const string PERFECT_TEXT = "Up";
+    private const string START = "Start";
     private Color color1 = new Color(117f / 255f, 255f / 255f, 184f / 255f);
     private Color color2 = new Color(33f / 255f, 255f / 255f, 141f / 255f);
 
 
 
-    [SerializeField] TMP_Text scoreText;
-    [SerializeField] GameObject decoImage;
-    [SerializeField] GameObject gameOverPanel;
-    [SerializeField] GameObject gameWinPanel;
-    [SerializeField] GameObject perfectText;
-    [SerializeField] GameObject greatText;
-    [SerializeField] Image backgroundImage;
-    [SerializeField] GameObject comboText;
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private GameObject decoImage;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject gameWinPanel;
+    [SerializeField] private GameObject startGamePanel;
+    [SerializeField] private GameObject perfectText;
+    [SerializeField] private GameObject greatText;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private GameObject comboText;
 
     private Color initialBgColor;
 
@@ -77,5 +79,18 @@ public class UIManager : MonoBehaviour
         {
             backgroundImage.color = color2;
         }
+    }
+
+    public void StartGame()
+    {
+        StartCoroutine(StartGameAfterSecond());
+    }
+
+    private IEnumerator StartGameAfterSecond()
+    {
+        startGamePanel.GetComponent<Animator>().SetTrigger(START);
+        yield return new WaitForSeconds(3);
+        startGamePanel.SetActive(false);
+
     }
 }

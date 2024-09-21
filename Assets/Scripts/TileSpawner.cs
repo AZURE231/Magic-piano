@@ -27,6 +27,16 @@ public class TileSpawner : MonoBehaviour
     {
         int randomSpawner = Random.Range(0, spawnPoints.Length);
         RectTransform spawner = spawnPoints[randomSpawner];
+        //GameObject tile = TilePool.Instance.GetTiledObject();
+        //if (tile != null)
+        //{
+        //    //tile.transform.position = spawner.position;
+        //    tile.transform.rotation = Quaternion.identity;
+        //    tile.transform.SetParent(canvasTranform, false);
+        //    tile.GetComponent<RectTransform>().anchoredPosition = spawner.anchoredPosition;
+        //    tile.GetComponent<Animator>().Rebind();
+        //    tile.SetActive(true);
+        //}
         GameObject tile = Instantiate(tilePb, spawner.position,
             Quaternion.identity, canvasTranform);
     }
