@@ -89,6 +89,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator StartGameAfterSecond()
     {
         startGamePanel.GetComponent<Animator>().SetTrigger(START);
+        AudioManager.Instance.Play("Piano");
         yield return new WaitForSeconds(3);
         startGamePanel.SetActive(false);
 

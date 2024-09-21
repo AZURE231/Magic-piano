@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     }
 
     private bool canRestart = true;
-    private float restartCooldown = 1f;
+    private float restartCooldown = 1.5f;
 
     public static GameManager Instance;
 
